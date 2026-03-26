@@ -44,15 +44,27 @@ function loadQuiz() {
 
 // Function to calculate the score
 function calculateScore() {
-  let score = 0;
-  quizData.forEach((q, index) => {
-    const selected = document.querySelector(`input[name="q${index}"]:checked`);
-    if (selected && selected.value === q.answer) {
-      score++;
-    }
-  });
-  resultDiv.textContent = `You scored ${score} out of ${quizData.length}!`;
+    let score = 0;
+    quizData.forEach((q, index) => {
+        // Use the exact name used in loadQuiz
+        const selected = document.querySelector(`input[name="q${index}"]:checked`);
+        
+        if (selected) {
+            // .trim() removes any accidental hidden spaces
+            const userAnswer = selected.value.trim();
+            const correctAnswer = q.answer.trim();
+            
+            if (userAnswer === correctAnswer) {
+                score++;
+            }
+        }
+    });
+    
+    // Update the result display
+    resultDiv.textContent = `You scored ${score} out of ${quizData.length}!`;
+    return score; // Return it so the Submit Event can use it
 }
+
 
 // Load quiz on page load
 loadQuiz();
