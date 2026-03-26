@@ -59,3 +59,39 @@ loadQuiz();
 
 // Submit button event
 submitBtn.addEventListener("click", calculateScore);
+// NEW FORM SUBMIT EVENT (Replace the old lines 59-61 with this)
+document.getElementById("quizForm").addEventListener("submit", function(e) {
+    e.preventDefault(); // Stops the page from refreshing immediately
+    
+    const form = e.target;
+
+    // Calculate the score
+    let score = 0;
+    quizData.forEach((q, index) => {
+        const selected = document.querySelector(`input[name="q${index}"]:checked`);
+        if (selected && selected.value === q.answer) {
+            score++;
+        }
+    });
+
+    // Display result to student
+    resultDiv.style.display = "block";
+    resultDiv.innerHTML = `
+        <h2>Submission Successful!</h2>
+        <p>Your Score: ${score} / ${quizData.length}</p>
+        <p style="color: gray;">Sending report to Gmail...</p>
+    `;
+
+    // Add hidden input so the score shows up in your email
+    const scoreInput = document.createElement("input");
+    scoreInput.type = "hidden";
+    scoreInput.name = "Total_Score";
+    scoreInput.value = `${score} / ${quizData.length}`;
+    form.appendChild(scoreInput);
+
+    // Send to FormSubmit after a 3-second delay
+    setTimeout(() => {
+        form.method = "POST";
+        form.submit();
+    }, 3000);
+});
