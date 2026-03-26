@@ -1,109 +1,173 @@
-// Array of questions for the Romans quiz
-const quizData = [
-  { question: "Q1: By what are we saved?", options: ["Faith", "Works", "Money", "Power"], answer: "Faith" },
-  { question: "Q2: God's law is ___?", options: ["Selective", "Optional", "Always broken", "Irrelevant"], answer: "Selective" },
-  { question: "Q3: Eternal life is ___?", options: ["Temporary", "Forever", "Partial", "Conditional"], answer: "Forever" },
-  { question: "Q4: What does the law show?", options: ["Faith", "Sin", "Love", "Joy"], answer: "Sin" },
-  { question: "Q5: Peace with God is ___?", options: ["Partial peace", "Total peace", "Impossible", "Conditional"], answer: "Partial peace" },
-  { question: "Q6: Abraham is known for ___?", options: ["Lineage", "Wealth", "Fame", "Kingdom"], answer: "Lineage" },
-  { question: "Q7: Romans gives ___?", options: ["A history of Israel", "Political advice", "Cooking recipes", "Sports tips"], answer: "A history of Israel" },
-  { question: "Q8: God's kindness is ___?", options: ["Conditional", "Partial", "Abundant", "Non-existent"], answer: "Abundant" },
-  { question: "Q9: Humans are ___?", options: ["Partially righteous", "Perfect", "Always sinful", "Angelic"], answer: "Partially righteous" },
-  { question: "Q10: What is central to salvation?", options: ["Faith", "Money", "Works", "Knowledge"], answer: "Faith" },
-  { question: "Q11: Life in Christ is ___?", options: ["Life in the Spirit", "Life of rules", "Life of sin", "Life of fear"], answer: "Life in the Spirit" },
-  { question: "Q12: What must we do to obey God?", options: ["Obedience", "Ignore", "Delay", "Argue"], answer: "Obedience" }
+// 1. QUESTIONS ARRAY
+let questions = [
+    {q:"Being justified by faith, we have what with God?", a:"C", options:["Enmity","Partial peace","Peace","Uncertainty"]},
+    {q:"What does the book of Romans contain according to the introduction?", a:"B", options:["Rules for the Gentiles","The gospel of God concerning salvation","A history of Israel","Paul's personal testimony"]},
+    {q:"What was Paul’s letter to the Romans written for?", a:"B", options:["To warn them","To explain justification by faith","To rebuke sins","To share his travels"]},
+    {q:"What is the theme for the epistle written to the Romans?", a:"C", options:["Redemption of Jews and Gentiles","The ministry of the message of salvation","For therein is the righteousness of God revealed from faith to faith","Ministers of the supernatural covenant"]},
+    {q:"What does Paul say he would not have known without the law?", a:"A", options:["Sin","Faith","Grace","Hope"]},
+    {q:"Who will be justified before God?", a:"C", options:["Only Jews","Only Gentiles","Everyone who believes","Those who follow the law only"]},
+    {q:"What does Paul say about the law?", a:"B", options:["It is bad","It shows sin","It saves","It is optional"]},
+    {q:"Abraham believed God, and it was counted to him as what?", a:"C", options:["Faith","Obedience","Righteousness","Sacrifice"]},
+    {q:"What does Paul say about boasting?", a:"C", options:["It is encouraged","It is irrelevant","It is excluded","It is optional"]},
+    {q:"Romans 1:1 says:", a:"B", options:["I beseech you brethren, writing this epistle to you, even though I dwell behind bars","Paul, a servant of Jesus Christ, called to be an apostle, separated unto the gospel of God","Greetings from the church in Rome","I write to you concerning your sins"]},
+    {q:"What leads people to repentance according to Romans 2?", a:"B", options:["Law alone","God’s kindness","Prophets","Tradition"]},
+    {q:"How are people justified according to Romans 3?", a:"B", options:["By works","By faith","By ritual","By descent"]},
+    {q:"We are buried with Christ through what?", a:"B", options:["Sacrifices","Baptism","Prayers","Confession"]},
+    {q:"What is the condition of all humans according to Romans 3?", a:"C", options:["Righteous","Partially righteous","All have sinned","Chosen only"]},
+    {q:"Sin shall not have dominion over believers because:", a:"C", options:["We are weak","We must obey","We are in Christ","We are chosen"]},
+    {q:"Who is used as an example of justification by faith?", a:"C", options:["Moses","David","Abraham","Peter"]},
+    {q:"The wages of sin is:", a:"B", options:["Glory","Death","Life","Forgiveness"]},
+    {q:"Between the Jews and the Gentiles, which were under the power of sin before Paul's ministry?", a:"C", options:["Jews","Gentiles","Both","None"]},
+    {q:"How are people put right with God according to the passage?", a:"B", options:["By works","By faith","By offering sacrifices","By lineage"]},
+    {q:"What should believers do concerning sin?", a:"C", options:["Ignore it","Endure it","Avoid it","Celebrate it"]},
+    {q:"What does Paul say about God’s judgment?", a:"C", options:["It is delayed","It is selective","It is righteous","It is optional"]},
+    {q:"What dwells in Paul’s flesh?", a:"A", options:["Sin","Holy Spirit","Faith","Love"]},
+    {q:"What results from the new life in union with Christ?", a:"C", options:["Confusion","Bondage","Freedom","Uncertainty"]},
+    {q:"What does Paul discuss in chapters 5–8?", a:"B", options:["Israelite history","Life in the Spirit","The law","Prophetic visions"]},
+    {q:"The law has dominion over a person for how long?", a:"B", options:["Forever","Until death","Until repentance","Until baptism"]},
+    {q:"Paul describes a struggle between:", a:"A", options:["Flesh and Spirit","Prophets and Priests","Law and Gentiles","Sin and Salvation"]},
+    {q:"What major issue does Paul wrestle with later in the letter?", a:"C", options:["Pride","Obedience","Sin nature","Faith"]},
+    {q:"Who delivers us from this body of death?", a:"C", options:["Law","Sin","Jesus Christ","Prophets"]},
+    {q:"The promise to Abraham came through what?", a:"B", options:["Works","Faith","Lineage","Sacrifice"]},
+    {q:"The good that Paul wants to do, he:", a:"C", options:["Always does","Does not care","Fails to do","Forgets"]}
 ];
 
-// Get HTML elements
-const quizContainer = document.getElementById("quiz-container");
-const submitBtn = document.getElementById("submit-btn");
-const resultDiv = document.getElementById("result");
-
-// Function to display the quiz
-function loadQuiz() {
-  quizContainer.innerHTML = ""; // Clear previous content
-
-  quizData.forEach((q, index) => {
-    const questionEl = document.createElement("div");
-    questionEl.classList.add("question");
-    questionEl.innerHTML = `<p>${q.question}</p>`;
-
-    const optionsList = document.createElement("ul");
-    optionsList.classList.add("options");
-
-    q.options.forEach(option => {
-      const li = document.createElement("li");
-      li.innerHTML = `<label><input type="radio" name="q${index}" value="${option}"> ${option}</label>`;
-      optionsList.appendChild(li);
-    });
-
-    questionEl.appendChild(optionsList);
-    quizContainer.appendChild(questionEl);
-  });
+// 2. SHUFFLE FUNCTION
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
 }
 
-// Function to calculate the score
-function calculateScore() {
-    let score = 0;
-    quizData.forEach((q, index) => {
-        // Use the exact name used in loadQuiz
-        const selected = document.querySelector(`input[name="q${index}"]:checked`);
-        
-        if (selected) {
-            // .trim() removes any accidental hidden spaces
-            const userAnswer = selected.value.trim();
-            const correctAnswer = q.answer.trim();
-            
-            if (userAnswer === correctAnswer) {
-                score++;
-            }
-        }
-    });
+// 3. RENDER QUESTIONS (Fixed with data-correct attribute)
+function renderQuestions() {
+    const container = document.getElementById("questions");
+    container.innerHTML = "";
+    const shuffledQuestions = shuffleArray([...questions]);
     
-    // Update the result display
-    resultDiv.textContent = `You scored ${score} out of ${quizData.length}!`;
-    return score; // Return it so the Submit Event can use it
+    shuffledQuestions.forEach((q, i) => {
+        const correctValue = q.options[q.a.charCodeAt(0) - 65];
+        let html = `
+            <div class="question" id="Q${i + 1}" data-correct="${correctValue}">
+                <p><strong>${i + 1}. ${q.q}</strong></p>
+        `;
+        
+        q.options.forEach(opt => {
+            html += `
+                <label>
+                    <input type="radio" name="Q${i + 1}" value="${opt}" required> ${opt}
+                </label>
+            `;
+        });
+        
+        html += `<input type="hidden" name="Answer_Q${i + 1}" value="">`;
+        html += `</div>`;
+        container.innerHTML += html;
+    });
 }
 
+// 4. TIMER LOGIC
+let timerInterval;
+function startTimer(duration) {
+    let time = duration, minutes, seconds;
+    timerInterval = setInterval(() => {
+        minutes = Math.floor(time / 60);
+        seconds = time % 60;
+        document.getElementById("timer").textContent = `Time Left: ${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+        if (--time < 0) {
+            clearInterval(timerInterval);
+            document.getElementById("quizForm").submit();
+        }
+    }, 1000);
+}
 
-// Load quiz on page load
-loadQuiz();
+// 5. START BUTTON EVENT
+document.getElementById("startBtn").addEventListener("click", () => {
+    const name = document.getElementById("userName").value.trim();
+    const group = document.getElementById("userGroup").value;
+    
+    if (!name || !group) { 
+        alert("Please enter your name and select a group leader"); 
+        return; 
+    }
+    
+    document.getElementById("landing").style.display = "none";
+    document.getElementById("quiz").style.display = "block";
+    window.quizUser = { name, group };
+    
+    renderQuestions();
+    startTimer(15 * 60);
+    
+    // Append user details for FormSubmit
+    const form = document.getElementById("quizForm");
+    const nameInput = document.createElement("input");
+    nameInput.type = "hidden";
+    nameInput.name = "STUDENT_NAME";
+    nameInput.value = name;
+    form.appendChild(nameInput);
 
-// Submit button event
-submitBtn.addEventListener("click", calculateScore);
-// NEW FORM SUBMIT EVENT (Replace the old lines 59-61 with this)
+    const groupInput = document.createElement("input");
+    groupInput.type = "hidden";
+    groupInput.name = "GROUP_LEADER";
+    groupInput.value = group;
+    form.appendChild(groupInput);
+});
+
+// 6. FORM SUBMIT EVENT (Calculates score and sends Gmail Report)
 document.getElementById("quizForm").addEventListener("submit", function(e) {
-    e.preventDefault(); // Stops the page from refreshing immediately
+    e.preventDefault(); 
+    clearInterval(timerInterval);
     
     const form = e.target;
-
-    // Calculate the score
     let score = 0;
-    quizData.forEach((q, index) => {
-        const selected = document.querySelector(`input[name="q${index}"]:checked`);
-        if (selected && selected.value === q.answer) {
+    const totalQuestions = questions.length;
+
+    // Calculate score based on the shuffled layout
+    const questionContainers = form.querySelectorAll(".question");
+    questionContainers.forEach((container) => {
+        const questionId = container.id;
+        const correctAnswer = container.getAttribute("data-correct");
+        const selectedOption = form.querySelector(`input[name="${questionId}"]:checked`);
+        
+        // Save the chosen answer to the hidden field for the email report
+        const hiddenInput = container.querySelector('input[type="hidden"]');
+        if (hiddenInput) {
+            hiddenInput.value = selectedOption ? selectedOption.value : "No Answer";
+        }
+
+        if (selectedOption && selectedOption.value === correctAnswer) {
             score++;
         }
     });
 
-    // Display result to student
+    // Add final score to the email report
+    let scoreInput = form.querySelector('input[name="FINAL_SCORE"]');
+    if (!scoreInput) {
+        scoreInput = document.createElement("input");
+        scoreInput.type = "hidden";
+        scoreInput.name = "FINAL_SCORE";
+        form.appendChild(scoreInput);
+    }
+    scoreInput.value = `${score} / ${totalQuestions}`;
+
+    // Show result to the student on the screen
+    const resultDiv = document.getElementById("result");
     resultDiv.style.display = "block";
     resultDiv.innerHTML = `
-        <h2>Submission Successful!</h2>
-        <p>Your Score: ${score} / ${quizData.length}</p>
-        <p style="color: gray;">Sending report to Gmail...</p>
+        <div style="background: #2563eb; padding: 20px; border-radius: 10px; margin-top: 20px;">
+            <h2>Submission Successful!</h2>
+            <p><strong>Student:</strong> ${window.quizUser.name}</p>
+            <p style="font-size: 24px; color: #facc15;"><strong>Score: ${score} / ${totalQuestions}</strong></p>
+            <p>Please wait while we record your results...</p>
+        </div>
     `;
 
-    // Add hidden input so the score shows up in your email
-    const scoreInput = document.createElement("input");
-    scoreInput.type = "hidden";
-    scoreInput.name = "Total_Score";
-    scoreInput.value = `${score} / ${quizData.length}`;
-    form.appendChild(scoreInput);
-
-    // Send to FormSubmit after a 3-second delay
+    // Final Submission to FormSubmit after 4 seconds
     setTimeout(() => {
         form.method = "POST";
         form.submit();
-    }, 3000);
+    }, 4000);
 });
+                              
