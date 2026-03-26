@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Romans Quiz - Full 30</title>
+<style>
+body { font-family: Arial, sans-serif; background: #0f172a; color: white; padding: 20px; }
+.container { max-width: 800px; margin: auto; background: #1e293b; padding: 20px; border-radius: 10px; }
+h1 { text-align: center; color: #38bdf8; }
+.question { margin-bottom: 20px; }
+.options label { display: block; margin: 10px 0; padding: 8px; background: #334155; border-radius: 5px; cursor: pointer; }
+.correct { background: #22c55e !important; }
+.wrong { background: #ef4444 !important; }
+button { width: 100%; padding: 12px; background: #22c55e; border: none; color: white; font-size: 16px; border-radius: 5px; cursor: pointer; }
+#result { background: #2563eb; padding: 20px; border-radius: 10px; margin-top: 20px; display: none; }
+#timer { font-size: 20px; color: #facc15; text-align: center; margin-bottom: 15px; }
+input[type="text"], select { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: none; }
+</style>
+</head>
+<body>
+
+<div class="container" id="landing">
+<h1>BROTHER'S ROOM BIBLE READING CHALLENGE<br>THE BOOK OF ROMANS</h1>
+<p>Please enter your details to start the quiz:</p>
+<label>Full Name:</label>
+<input type="text" id="userName">
+<label>Group Leader:</label>
+<select id="userGroup">
+<option value="">Select</option>
+<option>Papa Marvellous</option>
+<option>Brother God's Power</option>
+<option>AIM Leader Emmanuel</option>
+</select>
+<button id="startBtn">Start Quiz</button>
+</div>
+
+<div class="container" id="quiz" style="display:none;">
+<h1>BROTHER'S ROOM BIBLE READING CHALLENGE<br>THE BOOK OF ROMANS</h1>
+<div id="timer">Time Left: 15:00</div>
+<form id="quizForm" action="https://formsubmit.co/emmanueltaiwo920@gmail.com" method="POST">
+<input type="hidden" name="_subject" value="Romans Quiz Submission">
+<input type="hidden" name="_captcha" value="false">
+<div id="questions"></div>
+<button type="submit">Submit Quiz</button>
+</form>
+<div id="result"></div>
+</div>
+
+<script>
+// QUESTIONS ARRAY
+let questions = [
+{q:"Being justified by faith, we have what with God?", a:"C", options:["Enmity","Partial peace","Peace","Uncertainty"]},
+{q:"What does the book of Romans contain according to the introduction?", a:"B", options:["Rules for the Gentiles","The gospel of God concerning salvation","A history of Israel","Paul's personal testimony"]},
+{q:"What was Paul’s letter to the Romans written for?", a:"B", options:["To warn them","To explain justification by faith","To rebuke sins","To share his travels"]},
+{q:"What is the theme for the epistle written to the Romans?", a:"C", options:["Redemption of Jews and Gentiles","The ministry of the message of salvation","For therein is the righteousness of God revealed from faith to faith","Ministers of the supernatural covenant"]},
+{q:"What does Paul say he would not have known without the law?", a:"A", options:["Sin","Faith","Grace","Hope"]},
+{q:"Who will be justified before God?", a:"C", options:["Only Jews","Only Gentiles","Everyone who believes","Those who follow the law only"]},
+{q:"What does Paul say about the law?", a:"B", options:["It is bad","It shows sin","It saves","It is optional"]},
+{q:"Abraham believed God, and it was counted to him as what?", a:"C", options:["Faith","Obedience","Righteousness","Sacrifice"]},
+{q:"What does Paul say about boasting?", a:"C", options:["It is encouraged","It is irrelevant","It is excluded","It is optional"]},
+{q:"Romans 1:1 says:", a:"B", options:["I beseech you brethren, writing this epistle to you, even though I dwell behind bars","Paul, a servant of Jesus Christ, called to be an apostle, separated unto the gospel of God","Greetings from the church in Rome","I write to you concerning your sins"]},
+{q:"What leads people to repentance according to Romans 2?", a:"B", options:["Law alone","God’s kindness","Prophets","Tradition"]},
+{q:"How are people justified according to Romans 3?", a:"B", options:["By works","By faith","By ritual","By descent"]},
+{q:"We are buried with Christ through what?", a:"B", options:["Sacrifices","Baptism","Prayers","Confession"]},
+{q:"What is the condition of all humans according to Romans 3?", a:"C", options:["Righteous","Partially righteous","All have sinned","Chosen only"]},
+{q:"Sin shall not have dominion over believers because:", a:"C", options:["We are weak","We must obey","We are in Christ","We are chosen"]},
+{q:"Who is used as an example of justification by faith?", a:"C", options:["Moses","David","Abraham","Peter"]},
+{q:"The wages of sin is:", a:"B", options:["Glory","Death","Life","Forgiveness"]},
+{q:"Between the Jews and the Gentiles, which were under the power of sin before Paul's ministry?", a:"C", options:["Jews","Gentiles","Both","None"]},
+{q:"How are people put right with God according to the passage?", a:"B", options:["By works","By faith","By offering sacrifices","By lineage"]},
+{q:"What should believers do concerning sin?", a:"C", options:["Ignore it","Endure it","Avoid it","Celebrate it"]},
+{q:"What does Paul say about God’s judgment?", a:"C", options:["It is delayed","It is selective","It is righteous","It is optional"]},
+{q:"What dwells in Paul’s flesh?", a:"A", options:["Sin","Holy Spirit","Faith","Love"]},
+{q:"What results from the new life in union with Christ?", a:"C", options:["Confusion","Bondage","Freedom","Uncertainty"]},
+{q:"What does Paul discuss in chapters 5–8?", a:"B", options:["Israelite history","Life in the Spirit","The law","Prophetic visions"]},
+{q:"The law has dominion over a person for how long?", a:"B", options:["Forever","Until death","Until repentance","Until baptism"]},
+{q:"Paul describes a struggle between:", a:"A", options:["Flesh and Spirit","Prophets and Priests","Law and Gentiles","Sin and Salvation"]},
+{q:"What major issue does Paul wrestle with later in the letter?", a:"C", options:["Pride","Obedience","Sin nature","Faith"]},
+{q:"Who delivers us from this body of death?", a:"C", options:["Law","Sin","Jesus Christ","Prophets"]},
+{q:"The promise to Abraham came through what?", a:"B", options:["Works","Faith","Lineage","Sacrifice"]},
+{q:"The good that Paul wants to do, he:", a:"C", options:["Always does","Does not care","Fails to do","Forgets"]}
+];
+
+// SHUFFLE FUNCTION
+function shuffleArray(array){
+    for(let i=array.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [array[i],array[j]]=[array[j],array[i]];
+    }
+    return array;
+}
+
+// RENDER QUESTIONS
+function renderQuestions(){
+    const container=document.getElementById("questions");
+    container.innerHTML="";
+    const shuffledQuestions=shuffleArray([...questions]);
+    shuffledQuestions.forEach((q,i)=>{
+        let html=`<div class="question" id="Q${i+1}" data-correct="${q.options[q.a.charCodeAt(0)-65]}">
+        <p>${i+1}. ${q.q}</p>`;
+        q.options.forEach(opt=>{
+            html+=`<label><input type="radio" name="Q${i+1}" value="${opt}" required> ${opt}</label>`;
+        });
+        html+=`<input type="hidden" name="Q${i+1}_hidden" value="">`;
+        html+=`</div>`;
+        container.innerHTML+=html;
+    });
+}
+
+// TIMER
+let timerInterval;
+function startTimer(duration){
+    let time=duration, minutes, seconds;
+    timerInterval=setInterval(()=>{
+        minutes=Math.floor(time/60);
+        seconds=time%60;
+        document.getElementById("timer").textContent=`Time Left: ${minutes}:${seconds<10?'0'+seconds:seconds}`;
+        if(--time<0){
+            clearInterval(timerInterval);
+            document.getElementById("quizForm").submit();
+        }
+    },1000);
+}
+
+// START BUTTON
+document.getElementById("startBtn").addEventListener("click", ()=>{
+    const name=document.getElementById("userName").value.trim();
+    const group=document.getElementById("userGroup").value;
+    if(!name || !group){ alert("Please enter your name and select a group leader"); return; }
+    document.getElementById("landing").style.display="none";
+    document.getElementById("quiz").style.display="block";
+    window.quizUser={name, group};
+    renderQuestions();
+    startTimer(15*60);
+    // Append name and group as hidden inputs for FormSubmit
+    const form=document.getElementById("quizForm");
+    form.innerHTML+=`<input type="hidden" name="Name" value="${name}">`;
+    form.innerHTML+=`<input type="hidden" name="Group_Leader" value="${group}">`;
+});
+
+// FORM SUBMIT EVENT
+document.getElementById("quizForm").addEventListener("submit", function(e){
+    clearInterval(timerInterval);
+    const form=document.getElementById("quizForm");
+    // Update hidden inputs for answers
+    questions.forEach((q,i)=>{
+        const ans=form.querySelector(`#Q${i+1} input[type="radio"]:checked`);
+        const hidden=form.querySelector(`#Q${i+1} input[type="hidden"]`);
+        if(hidden) hidden.value=ans ? ans.value : "";
+    });
+    const score=questions.reduce((s,q,i)=>{
+        const ans=form.querySelector(`#Q${i+1} input[type="radio"]:checked`);
+        return s + ((ans && ans.value===q.options[q.a.charCodeAt(0)-65])?1:0);
+    },0);
+    const resultDiv=document.getElementById("result");
+    resultDiv.style.display="block";
+    resultDiv.innerHTML=`<h2>Thank you, ${window.quizUser.name}!</h2>
+    <p>Group Leader: ${window.quizUser.group}</p>
+    <p>Your Score: ${score} / ${questions.length}</p>`;
+});
+</script>
+</body>
+</html>
