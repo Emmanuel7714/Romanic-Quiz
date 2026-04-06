@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Romans Bible Challenge</title>
     <style>
-        /* Your Custom Dark Theme */
         body {
             font-family: Arial, sans-serif;
             background-color: #0f172a;
@@ -17,7 +16,6 @@
             align-items: flex-start;
             min-height: 100vh;
         }
-
         .container {
             background-color: #1e293b;
             padding: 30px;
@@ -27,74 +25,31 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.5);
             margin-bottom: 40px;
         }
-
         h1 { text-align: center; color: #38bdf8; margin-bottom: 25px; font-size: 20px; line-height: 1.4; }
-        
         #timer { 
-            text-align: center; 
-            font-size: 22px; 
-            color: #facc15; 
-            font-weight: bold; 
-            margin-bottom: 20px; 
-            position: sticky; 
-            top: 0; 
-            background: #1e293b;
-            padding: 10px;
-            z-index: 10;
+            text-align: center; font-size: 22px; color: #facc15; font-weight: bold; margin-bottom: 20px; 
+            position: sticky; top: 0; background: #1e293b; padding: 10px; z-index: 10;
         }
-
         .question { margin-bottom: 30px; border-bottom: 1px solid #334155; padding-bottom: 20px; }
         .question p { font-size: 18px; font-weight: bold; margin-bottom: 15px; color: #e2e8f0; }
-
         .options-list { list-style: none; padding: 0; }
         .option-item {
-            background: #334155;
-            margin-bottom: 10px;
-            padding: 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            display: block;
-            transition: 0.2s;
-            border: 1px solid transparent;
+            background: #334155; margin-bottom: 10px; padding: 14px; border-radius: 8px;
+            cursor: pointer; display: block; transition: 0.2s; border: 1px solid transparent;
         }
         .option-item:hover { background: #475569; border-color: #38bdf8; }
         .option-item input { margin-right: 12px; transform: scale(1.2); }
-
         input[type="text"], select {
-            width: 100%;
-            padding: 14px;
-            margin: 10px 0 25px 0;
-            border-radius: 8px;
-            border: 1px solid #334155;
-            background: #0f172a;
-            color: white;
-            box-sizing: border-box;
-            font-size: 16px;
+            width: 100%; padding: 14px; margin: 10px 0 25px 0; border-radius: 8px;
+            border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box; font-size: 16px;
         }
-
         button {
-            background-color: #2563eb;
-            color: white;
-            padding: 16px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 18px;
-            width: 100%;
-            font-weight: bold;
-            transition: 0.3s;
+            background-color: #2563eb; color: white; padding: 16px; border: none;
+            border-radius: 8px; cursor: pointer; font-size: 18px; width: 100%; font-weight: bold;
         }
-        button:hover { background-color: #1d4ed8; transform: translateY(-2px); }
-
-        /* Score Display Style */
         #result {
-            margin-top: 20px;
-            text-align: center;
-            background: #16a34a;
-            padding: 30px;
-            border-radius: 12px;
-            display: none;
-            border: 2px solid #22c55e;
+            margin-top: 20px; text-align: center; background: #16a34a; padding: 30px;
+            border-radius: 12px; display: none; border: 2px solid #22c55e;
         }
     </style>
 </head>
@@ -104,7 +59,6 @@
     <h1>BROTHER'S ROOM BIBLE CHALLENGE<br>THE BOOK OF ROMANS</h1>
     <label>Full Name:</label>
     <input type="text" id="userName" placeholder="Type your name here...">
-    
     <label>Group Leader:</label>
     <select id="userGroup">
         <option value="">-- Click to Select Leader --</option>
@@ -112,7 +66,6 @@
         <option>Brother God's Power</option>
         <option>AIM Leader Emmanuel</option>
     </select>
-    
     <button type="button" id="startBtn">Begin Challenge</button>
 </div>
 
@@ -121,12 +74,9 @@
     <form id="quizForm" action="https://formsubmit.co/emmanueltaiwo920@gmail.com" method="POST">
         <input type="hidden" name="_subject" value="Romans Quiz Submission">
         <input type="hidden" name="_captcha" value="false">
-        
         <div id="questions-container"></div>
-        
         <button type="button" id="submitScoreBtn">Submit Quiz Results</button>
     </form>
-    
     <div id="result"></div>
 </div>
 
@@ -170,6 +120,7 @@ function shuffle(array) {
 
 function renderQuiz() {
     const container = document.getElementById("questions-container");
+    container.innerHTML = "";
     const shuffledQuestions = shuffle([...quizData]);
     
     shuffledQuestions.forEach((item, index) => {
@@ -206,53 +157,47 @@ function startTimer(seconds) {
 }
 
 document.getElementById("startBtn").addEventListener("click", () => {
-    const name = document.getElementById("userName").value.trim();
-    const group = document.getElementById("userGroup").value;
-    if(!name || !group) { alert("Please enter your name and select a leader!"); return; }
+    const nameInput = document.getElementById("userName");
+    const groupSelect = document.getElementById("userGroup");
+    if(!nameInput.value.trim() || !groupSelect.value) { alert("Please enter your name and select a leader!"); return; }
     
-    window.userProfile = { name, group };
+    window.userProfile = { name: nameInput.value.trim(), group: groupSelect.value };
     document.getElementById("landing").style.display = "none";
     document.getElementById("quiz").style.display = "block";
     renderQuiz();
     startTimer(15 * 60);
 });
 
-// SUBMISSION LOGIC
 document.getElementById("submitScoreBtn").addEventListener("click", function() {
     clearInterval(timerInterval);
-    
     let score = 0;
     let missedText = "";
-    const questionDivs = document.querySelectorAll(".question");
+    const divs = document.querySelectorAll(".question");
 
-    questionDivs.forEach((div) => {
+    divs.forEach((div) => {
         const questionText = div.querySelector("p").innerText;
-        const correct = div.getAttribute("data-correct");
+        const correct = div.getAttribute("data-correct").trim();
         const selected = div.querySelector('input[type="radio"]:checked');
-        const userAnswer = selected ? selected.value : "No Answer";
+        const userAns = selected ? selected.value.trim() : "No Answer";
 
-        if(userAnswer === correct) {
+        if(userAns === correct) {
             score++;
         } else {
-            missedText += `\n❌ QUESTION: ${questionText}\n- YOUR ANSWER: ${userAnswer}\n- CORRECT ANSWER: ${correct}\n`;
+            missedText += `\n❌ Q: ${questionText}\n- You chose: ${userAns}\n- Correct: ${correct}\n`;
         }
     });
 
     const finalScore = `${score} / ${quizData.length}`;
-
-    // 1. Prepare Gmail Content
     const reportForEmail = `
 PARTICIPANT: ${window.userProfile.name}
 LEADER: ${window.userProfile.group}
 FINAL SCORE: ${finalScore}
 ---------------------------------
-${missedText || "PERFECT SCORE! WELL DONE."}
+${missedText || "PERFECT SCORE!"}
     `;
 
-    // 2. Hide Quiz and Show Score Box
     const form = document.getElementById("quizForm");
     const resultDiv = document.getElementById("result");
-    
     form.style.display = "none";
     document.getElementById("timer").style.display = "none";
     
@@ -262,23 +207,20 @@ ${missedText || "PERFECT SCORE! WELL DONE."}
         <p style="font-size: 24px;">${window.userProfile.name}, you scored:</p>
         <p style="font-size: 50px; font-weight: bold; margin: 15px 0;">${finalScore}</p>
         <p>Sending report to <strong>${window.userProfile.group}</strong>...</p>
-        <p style="font-size: 12px; color: #dcfce7; margin-top: 10px;">Redirecting in 5 seconds...</p>
     `;
     window.scrollTo(0, 0);
 
-    // 3. Inject data into form and submit
-    const reportInput = document.createElement("textarea");
-    reportInput.name = "Full_Bible_Report";
-    reportInput.value = reportForEmail;
-    reportInput.style.display = "none";
-    form.appendChild(reportInput);
+    // Final form injection
+    const hiddenName = document.createElement("input");
+    hiddenName.type = "hidden"; hiddenName.name = "Participant_Name"; hiddenName.value = window.userProfile.name;
+    form.appendChild(hiddenName);
 
-    // Final trigger to send email
-    setTimeout(() => {
-        form.submit();
-    }, 5000);
+    const hiddenReport = document.createElement("textarea");
+    hiddenReport.name = "Graded_Report"; hiddenReport.value = reportForEmail; hiddenReport.style.display = "none";
+    form.appendChild(hiddenReport);
+
+    setTimeout(() => { form.submit(); }, 4000);
 });
 </script>
 </body>
 </html>
-
